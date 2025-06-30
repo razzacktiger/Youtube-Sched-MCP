@@ -1,0 +1,24 @@
+# YouTube Watch Later Cleaner - FastMCP Server Dependencies
+# Core FastMCP 2.0
+fastmcp>=2.9.0
+
+# YouTube API
+google-api-python-client>=2.120.0
+google-auth-httplib2>=0.2.0
+google-auth-oauthlib>=1.2.0
+
+# Notion API  
+notion-client>=2.2.1
+
+# HTTP client
+httpx>=0.27.0
+
+# Data validation and parsing
+pydantic>=2.5.0
+python-dateutil>=2.8.2
+
+# Environment management
+python-dotenv>=1.0.0
+
+# Utilities
+typing-extensions>=4.8.0 
