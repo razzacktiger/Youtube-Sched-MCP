@@ -1,0 +1,41 @@
+# YouTube Watch Later Cleaner - Environment Configuration (OAuth Update)
+
+# =============================================================================
+# REQUIRED: YouTube Data API v3 (for basic functionality)
+# =============================================================================
+# Get from: https://console.developers.google.com/
+# 1. Create project → Enable YouTube Data API v3 → Create API Key
+YOUTUBE_API_KEY=your_youtube_api_key_here
+
+# =============================================================================
+# REQUIRED FOR WATCH LATER: OAuth 2.0 Credentials (for personal playlists)
+# =============================================================================
+# For accessing Watch Later playlist, you need OAuth instead of just API key
+# Run: python oauth_setup.py to set these up
+YOUTUBE_OAUTH_TOKEN=token.json
+YOUTUBE_OAUTH_CREDENTIALS=credentials.json
+
+# =============================================================================
+# OPTIONAL: Notion Integration (for exporting organized videos)
+# =============================================================================
+# Get from: https://www.notion.so/my-integrations
+# 1. Create new integration → Copy "Internal Integration Token"
+NOTION_API_KEY=your_notion_api_key_here
+NOTION_DATABASE_ID=your_notion_database_id_here
+
+# =============================================================================
+# OPTIONAL: Google Calendar Integration (for scheduling viewing sessions) 
+# =============================================================================
+# Get from: https://console.developers.google.com/
+# 1. Enable Google Calendar API → Create Service Account → Download JSON
+GOOGLE_CALENDAR_CREDENTIALS=path/to/service-account-key.json
+GOOGLE_CALENDAR_ID=your_calendar_id@gmail.com
+
+# =============================================================================
+# OAUTH SETUP INSTRUCTIONS
+# =============================================================================
+# To access Watch Later playlist:
+# 1. Run: python oauth_setup.py
+# 2. Follow the prompts to create credentials.json
+# 3. Authenticate in browser to generate token.json
+# 4. Update .env file with the OAuth settings above 

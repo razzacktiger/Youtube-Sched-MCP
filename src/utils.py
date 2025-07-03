@@ -3,7 +3,7 @@ Utility functions and helpers for YouTube Watch Later Cleaner.
 """
 
 import os
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 
 def get_api_config() -> Dict[str, Any]:
@@ -15,13 +15,20 @@ def get_api_config() -> Dict[str, Any]:
     # Get the credentials file path from environment
     google_creds_path = os.getenv('GOOGLE_CREDENTIALS_FILE')
     
+    # YouTube OAuth configuration
+    youtube_oauth_token = os.getenv('YOUTUBE_OAUTH_TOKEN', 'token.json')
+    youtube_oauth_creds = os.getenv('YOUTUBE_OAUTH_CREDENTIALS', 'credentials.json')
+    
     return {
         'youtube_api_key': os.getenv('YOUTUBE_API_KEY'),
         'notion_api_key': os.getenv('NOTION_API_KEY'),
         'google_credentials_file': google_creds_path,
+        'youtube_oauth_token': youtube_oauth_token,
+        'youtube_oauth_credentials': youtube_oauth_creds,
         'has_youtube': bool(os.getenv('YOUTUBE_API_KEY')),
         'has_notion': bool(os.getenv('NOTION_API_KEY')),
-        'has_google_creds': bool(google_creds_path and os.path.exists(google_creds_path))
+        'has_google_creds': bool(google_creds_path and os.path.exists(google_creds_path)),
+        'has_youtube_oauth': bool(os.path.exists(youtube_oauth_token) and os.path.exists(youtube_oauth_creds))
     }
 
 
@@ -87,4 +94,42 @@ def create_mock_video_data(count: int = 247) -> Dict[str, Any]:
             "oldest_video_days": 180,
             "unavailable_count": 23
         }
-    } 
+    }
+
+
+def load_youtube_oauth_credentials(token_file: str = 'token.json') -> Optional[Any]:
+    """Load YouTube OAuth credentials from token file.
+    
+    Args:
+        token_file: Path to the OAuth token file
+        
+    Returns:
+        OAuth credentials object or None if not available
+    """
+    if not os.path.exists(token_file):
+        return None
+    
+    try:
+        from google.oauth2.credentials import Credentials
+        from google.auth.transport.requests import Request
+        
+        # Load existing credentials
+        creds = Credentials.from_authorized_user_file(
+            token_file, 
+            ['https://www.googleapis.com/auth/youtube.readonly', 
+             'https://www.googleapis.com/auth/youtube']
+        )
+        
+        # Refresh if expired
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+            
+            # Save refreshed token
+            with open(token_file, 'w') as token:
+                token.write(creds.to_json())
+        
+        return creds if creds and creds.valid else None
+        
+    except Exception as e:
+        print(f"Error loading OAuth credentials: {e}")
+        return None 

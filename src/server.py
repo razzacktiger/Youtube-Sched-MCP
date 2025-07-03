@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 import os
 
 # Import our organized modules
-from youtube_api import analyze_watch_later_impl, cleanup_unavailable_impl, create_filtered_playlists_impl
+from youtube_api import analyze_watch_later_impl, cleanup_unavailable_impl, create_filtered_playlists_impl, test_public_playlist_impl
 from categorizer import categorize_videos_impl
 from exporters import create_notion_database_impl, schedule_viewing_impl
 from utils import get_api_config, get_default_categories
@@ -184,6 +184,27 @@ async def create_filtered_playlists(
         Created playlist URLs and video counts
     """
     return await create_filtered_playlists_impl(categories, max_videos_per_playlist, ctx)
+
+
+@mcp.tool("test_public_playlist")
+async def test_public_playlist(
+    playlist_id: str = "PLBZBNtaBAUo9lGKHi5-Sb0vhJjzQxBBt7",  # Default: Python tutorials
+    max_results: Optional[int] = 10,
+    include_stats: bool = True,
+    ctx: Context = None
+) -> Dict[str, Any]:
+    """Test playlist analysis with a public playlist (for testing our categorization).
+    
+    Args:
+        playlist_id: Public YouTube playlist ID to analyze
+        max_results: Limit number of videos to analyze
+        include_stats: Include detailed statistics in response
+        ctx: FastMCP context for logging
+        
+    Returns:
+        Analysis summary with categorization breakdown and statistics
+    """
+    return await test_public_playlist_impl(playlist_id, max_results, include_stats, ctx)
 
 # ============================================================================
 # RESOURCES (configuration and stats)

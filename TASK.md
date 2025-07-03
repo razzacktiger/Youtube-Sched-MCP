@@ -56,10 +56,10 @@ fastmcp dev src/server.py  # Should open MCP Inspector
 **Priority**: Critical Path | **Estimated Time**: 30 minutes | **Dependencies**: Task 1.1
 
 - [x] Copy `env.example` to `.env` ✅
-- [ ] Get YouTube Data API key from Google Console
-- [ ] Add YouTube API key to `.env` file
-- [ ] Test server with real API key (no warnings)
-- [ ] Optional: Get Notion API key for export features
+- [x] Get YouTube Data API key from Google Console
+- [x] Add YouTube API key to `.env` file
+- [x] Test server with real API key (no warnings)
+- [x] Optional: Get Notion API key for export features
 
 **Steps**:
 
@@ -151,7 +151,6 @@ _(Completed tasks will be moved here with completion date)_
 
 ### Key Architectural Changes:
 
-- **Single Server File**: All tools in `src/server.py` using decorators
 - **Built-in Testing**: Use `Client(mcp)` for in-memory testing
 - **Modern Dependencies**: FastMCP 2.0, pydantic v2, httpx
 - **Simplified Structure**: No complex MCP protocol handling needed
